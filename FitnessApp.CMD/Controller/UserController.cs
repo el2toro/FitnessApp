@@ -23,7 +23,7 @@ namespace FitnessApp.CMD.Controler
                 throw new ArgumentNullException("User name can't be empty ot white space.", nameof(userName));
             }
 
-            Users = GetUserData();
+            Users = GetUsersData();
 
             CurrentUser = Users.SingleOrDefault(u => u.Name == userName);
 
@@ -41,13 +41,13 @@ namespace FitnessApp.CMD.Controler
        /// </summary>
        /// <returns></returns>
 
-        private List<User> GetUserData()
+        private List<User> GetUsersData()
         {
             var formatter = new BinaryFormatter();
 
             using (var fs = new FileStream("users.dat", FileMode.OpenOrCreate))
             {
-                if (formatter.Deserialize(fs) is List<User> users)
+                if (fs.Length > 0 && formatter.Deserialize(fs) is List<User> users)
                 {
                     return users;
                 }

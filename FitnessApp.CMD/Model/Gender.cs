@@ -13,8 +13,6 @@ namespace FitnessApp.CMD.Model
             {
                 throw new ArgumentNullException(" The name field can't be empty or white space");
 
-                Name = name;
-
             }
 
         }

@@ -1,4 +1,5 @@
-﻿using FitnessApp.CMD.Model;
+﻿using FitnessApp.CMD.Controller;
+using FitnessApp.CMD.Model;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,7 +9,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace FitnessApp.CMD.Controler
 {
-    class UserController
+    class UserController : ControllerBase
     {
         public List<User>  Users { get; }
 
@@ -43,20 +44,7 @@ namespace FitnessApp.CMD.Controler
 
         private List<User> GetUsersData()
         {
-            var formatter = new BinaryFormatter();
-
-            using (var fs = new FileStream("users.dat", FileMode.OpenOrCreate))
-            {
-                if (fs.Length > 0 && formatter.Deserialize(fs) is List<User> users)
-                {
-                    return users;
-                }
-                else
-                {
-                    return new List<User>();
-                }
-            }
-
+            return Load<List<User>>("user.dat") ?? new List<User>();
         }
 
         public void SetNewUserData(string genderName, DateTime birthDate, double weight = 1, double height = 1)
@@ -70,14 +58,7 @@ namespace FitnessApp.CMD.Controler
 
         public void Save()
         {
-
-            var formatter = new BinaryFormatter();
-
-            using (var fs = new FileStream("users.dat", FileMode.OpenOrCreate))
-            {
-                formatter.Serialize(fs, Users);
-            }
-
+            Save("users.dat", Users);
         }
 
          /// <summary>
